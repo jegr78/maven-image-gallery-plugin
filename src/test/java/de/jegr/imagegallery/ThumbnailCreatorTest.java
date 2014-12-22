@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 public class ThumbnailCreatorTest {
@@ -22,7 +21,7 @@ public class ThumbnailCreatorTest {
     private void assertThumbnail(String dirName, String imageName, File outputDir) throws IOException {
         File imageFile = new File(ThumbnailCreatorTest.class.getClassLoader().getResource(dirName + "/" + imageName).getFile());
         ThumbnailCreator.create(imageFile, outputDir);
-        String thumbnailFileName = FilenameUtils.getBaseName(imageName) + "_thumbnail." + FilenameUtils.getExtension(imageName);
+        String thumbnailFileName = ImageOperations.getThumbnailFileName(imageFile);
         File thumbnailFile = new File(outputDir, thumbnailFileName);        
         assertTrue("thumbnail was not created: " + thumbnailFile, thumbnailFile.exists());
     }

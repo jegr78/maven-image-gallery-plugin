@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <title>%TITLE%</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+        <script src="%HOME_PATH%galleria/galleria-1.4.2.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div class="container">
+          <div class="row">
+            <div class="center-block">
+              <a href="%HOME_PATH%index.html">
+                <button class="btn btn-primary" name="home">HOME</button>
+               </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="galleria" style="height:95vh;"></div>
+            <script>
+              %DATA%
+            
+              Galleria.loadTheme('%HOME_PATH%galleria/themes/classic/galleria.classic.min.js');
+              Galleria.run('.galleria', {
+                dataSource: data,
+                transition: 'fade'
+              });
+          </script>
+         </div>
+       </div>
+    </body>
+</html>

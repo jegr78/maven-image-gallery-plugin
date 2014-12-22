@@ -17,6 +17,7 @@ package de.jegr.imagegallery.mojo;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -41,27 +42,45 @@ public class ImageGalleryMojo extends AbstractMojo {
 	@Parameter(property = "imagesRootDir", required = true)
 	private File imagesRootDirectory;
 
+	private ImageOperations imageOps;
+	
 	public void execute() throws MojoExecutionException {
 		ensureDirectories();
-		ImageOperations imageOps = new ImageOperations(imagesRootDirectory, outputDirectory);
-		Map<File, List<File>> imageFilesPerDirectory = scanImagesRootDir(imageOps);
-		copyToOutputDirectory(imageOps, imageFilesPerDirectory);
+		initImageOperations();
+		copyGalleriaFiles();
+		copyToOutputDirectory(scanImagesRootDir());
 	}
 
 	private void ensureDirectories() {
-		outputDirectory.mkdirs();
-		imagesRootDirectory.mkdirs();
+	    outputDirectory.mkdirs();
+	    imagesRootDirectory.mkdirs();
 	}
 
-	private Map<File, List<File>> scanImagesRootDir(ImageOperations imageOps) {
+    private void initImageOperations() {
+        imageOps = new ImageOperations(imagesRootDirectory, outputDirectory);
+    }
+    
+    private void copyGalleriaFiles() throws MojoExecutionException {
+        try {
+            imageOps.copyGalleriaFiles();
+        } catch (IOException e) {
+            throw new MojoExecutionException("unable to copy galleria files", e);
+        }
+    }
+
+	private Map<String, List<File>> scanImagesRootDir() {
 		return imageOps.scanImagesRootDir();
 	}
 
-	private void copyToOutputDirectory(ImageOperations imageOps, Map<File, List<File>> imageFilesPerDirectory) {
-		List<File> errors = imageOps.copyToOutputDirectory(imageFilesPerDirectory);
-		for (File error : errors) {
-		    getLog().warn("unable to copy file: " + error);
-		}
+	private void copyToOutputDirectory(Map<String, List<File>> imageFilesPerDirectory) throws MojoExecutionException {
+        try {
+            List<File> errors = imageOps.copyToOutputDirectory(imageFilesPerDirectory);
+            for (File error : errors) {
+                getLog().warn("unable to copy file: " + error);
+            }
+        } catch (IOException e) {
+            throw new MojoExecutionException("unable to copy images to output directory", e);   
+        }
 	}
 
 }
