@@ -4,10 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>de.jegr.it</groupId>
-  <artifactId>simple-it</artifactId>
+  <artifactId>create</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <description>A simple IT verifying the basic use case.</description>
+  <description>Test for create</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,17 +16,16 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>@project.groupId@</groupId>
-        <artifactId>@project.artifactId@</artifactId>
+        <groupId>de.jegr</groupId>
+        <artifactId>image-gallery-maven-plugin</artifactId>
         <version>@project.version@</version>
         <executions>
-          <execution>
-            <id>touch</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>touch</goal>
-            </goals>
-          </execution>
+            <execution>
+                <id>create-gallery</id>
+                <goals>
+                    <goal>create</goal>
+                </goals>
+            </execution>
         </executions>
       </plugin>
     </plugins>

@@ -4,21 +4,30 @@ import java.awt.Image;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.JarURLConnection;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -171,8 +180,7 @@ public class ImageOperations {
     }
     
     public void copyGalleriaFiles() throws IOException {
-        File galleriaDir = new File(getClass().getClassLoader().getResource("galleria").getFile());
-        FileUtils.copyDirectory(galleriaDir, new File(outputDirectory, "galleria"));
+        copyResource("galleria");
     }
     
     public void createHTMLForImageDirectory(String imageDirName, String homePath, String titlePath) throws IOException {
@@ -208,7 +216,7 @@ public class ImageOperations {
     
     private void writeHTML(File imageDir, String homePath, String titlePath, JSONArray imageJsons) throws IOException {
         String data = "var data = ".concat(imageJsons.toString());
-        String html = FileUtils.readFileToString(new File(getClass().getClassLoader().getResource("gallery.html").getFile()));
+        String html = readResource("gallery.html");
         html = html.replace("%DATA%", data).replace("%HOME_PATH%", homePath).replace("%TITLE%", titlePath);
         File galleryHtmlFile = new File(imageDir, "gallery.html");
         FileUtils.write(galleryHtmlFile, html);
@@ -247,12 +255,12 @@ public class ImageOperations {
     
     private void writeIndexHtml(List<de.jegr.imagegallery.pojo.Image> galleries) throws IOException {
         String galleriesHtml = createGalleriesHtml(galleries);
-        String indexHtml = FileUtils.readFileToString(new File(getClass().getClassLoader().getResource("index.html").getFile()));
+        String indexHtml = readResource("index.html");
         indexHtml = indexHtml.replace("%GALLERIES%", galleriesHtml);
         File indexHtmlFile = new File(outputDirectory, "index.html");
         FileUtils.write(indexHtmlFile, indexHtml);
     }
-
+    
     String createGalleriesHtml(List<de.jegr.imagegallery.pojo.Image> galleries) {
         sortGalleries(galleries);
         String data = "var data = ";
@@ -290,5 +298,53 @@ public class ImageOperations {
             return false;
         }
         return true;
+    }
+    
+    String readResource(String resource) throws IOException {
+        return IOUtils.toString(getClass().getClassLoader().getResourceAsStream(resource), Charsets.toCharset(Charset.defaultCharset()));
+    }
+    
+    void copyResource(String source) throws IOException {
+        File targetDir = new File(outputDirectory, source);
+        try {
+            copyFromDisk(source, targetDir);
+        } catch (IOException ignore) {
+            JarURLConnection jarConnection = (JarURLConnection) getClass().getClassLoader().getResource(source).openConnection();
+            copyFromJar(source, targetDir, jarConnection);
+        }
+    }
+
+    private void copyFromDisk(String source, File targetDir) throws IOException {
+        File resourceFile = new File(getClass().getClassLoader().getResource(source).getFile());
+        if (resourceFile.isFile()) {
+            FileUtils.copyFileToDirectory(resourceFile, targetDir);
+        } else {
+            FileUtils.copyDirectory(resourceFile, targetDir);
+        }
+    }
+
+    private void copyFromJar(String source, File targetDir, JarURLConnection jarConnection) throws IOException {
+        JarFile jarFile = jarConnection.getJarFile();
+        for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements();) {
+            JarEntry jarEntry = e.nextElement();
+            String jarEntryName = jarEntry.getName();
+            String jarConnectionEntryName = jarConnection.getEntryName();
+            if (jarEntryName.startsWith(jarConnectionEntryName)) {
+                String filename = jarEntryName.startsWith(jarConnectionEntryName) ? jarEntryName.substring(jarConnectionEntryName.length()) : jarEntryName;
+                File currentFile = new File(targetDir, filename);
+                if (jarEntry.isDirectory()) {
+                    currentFile.mkdirs();
+                } else {
+                    InputStream is = jarFile.getInputStream(jarEntry);
+                    OutputStream out = FileUtils.openOutputStream(currentFile);
+                    try {
+                        IOUtils.copy(is, out);
+                    } finally {
+                        IOUtils.closeQuietly(is);
+                        IOUtils.closeQuietly(out);
+                    }
+                }
+            }
+        }
     }
 }

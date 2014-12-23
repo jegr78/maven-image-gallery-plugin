@@ -39,12 +39,13 @@ public class ImageGalleryMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.build.directory}/gallery", property = "outputDir", required = true)
 	private File outputDirectory;
 	
-	@Parameter(property = "imagesRootDir", required = true)
+	@Parameter(defaultValue = "${basedir}", property = "imagesRootDir", required = true)
 	private File imagesRootDirectory;
 
 	private ImageOperations imageOps;
 	
 	public void execute() throws MojoExecutionException {
+	    getLog().info("creating image gallery from: " + imagesRootDirectory + " to: " + outputDirectory);
 		ensureDirectories();
 		initImageOperations();
 		copyGalleriaFiles();
@@ -52,6 +53,7 @@ public class ImageGalleryMojo extends AbstractMojo {
 	}
 
 	private void ensureDirectories() {
+	    getLog().debug("ensure src/dest directories existence");
 	    outputDirectory.mkdirs();
 	    imagesRootDirectory.mkdirs();
 	}
@@ -61,6 +63,7 @@ public class ImageGalleryMojo extends AbstractMojo {
     }
     
     private void copyGalleriaFiles() throws MojoExecutionException {
+        getLog().debug("copy galleria files to destination");
         try {
             imageOps.copyGalleriaFiles();
         } catch (IOException e) {
@@ -69,10 +72,12 @@ public class ImageGalleryMojo extends AbstractMojo {
     }
 
 	private Map<String, List<File>> scanImagesRootDir() {
+	    getLog().debug("scanning destination directory for images");
 		return imageOps.scanImagesRootDir();
 	}
 
 	private void copyToOutputDirectory(Map<String, List<File>> imageFilesPerDirectory) throws MojoExecutionException {
+	    getLog().debug("copying found images to destination");
         try {
             List<File> errors = imageOps.copyToOutputDirectory(imageFilesPerDirectory);
             for (File error : errors) {
