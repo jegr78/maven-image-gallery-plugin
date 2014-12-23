@@ -6,6 +6,7 @@ public class Image {
     private String thumb;
     private String title;
     private String description;
+    private String link;
     
    
     public Image(String image, String thumb, String title, String description) {
@@ -48,12 +49,21 @@ public class Image {
         this.description = description;
     }
     
+    public String getLink() {
+        return link;
+    }
+    
+    public void setLink(String link) {
+        this.link = link;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((image == null) ? 0 : image.hashCode());
+        result = prime * result + ((link == null) ? 0 : link.hashCode());
         result = prime * result + ((thumb == null) ? 0 : thumb.hashCode());
         result = prime * result + ((title == null) ? 0 : title.hashCode());
         return result;
@@ -85,6 +95,13 @@ public class Image {
         } else if (!image.equals(other.image)) {
             return false;
         }
+        if (link == null) {
+            if (other.link != null) {
+                return false;
+            }
+        } else if (!link.equals(other.link)) {
+            return false;
+        }
         if (thumb == null) {
             if (other.thumb != null) {
                 return false;
@@ -104,7 +121,7 @@ public class Image {
     
     @Override
     public String toString() {
-        return "Image [image=" + image + ", thumb=" + thumb + ", title=" + title + ", description=" + description + "]";
+        return "Image [image=" + image + ", thumb=" + thumb + ", title=" + title + ", description=" + description + ", link=" + link + "]";
     }
     
 }

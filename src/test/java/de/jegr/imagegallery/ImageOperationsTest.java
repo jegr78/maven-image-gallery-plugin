@@ -6,13 +6,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import de.jegr.imagegallery.pojo.Image;
 
 
 public class ImageOperationsTest {
@@ -34,7 +36,7 @@ public class ImageOperationsTest {
     public void scanImagesRootDir() throws Exception {
         Map<String, List<File>> imagesPerDir = imageOps.scanImagesRootDir();
         Set<String> directories = imagesPerDir.keySet();
-        assertEquals("wrong number of directories", 3, directories.size());
+        assertEquals("wrong number of directories", 4, directories.size());
     }
     
     @Test
@@ -75,10 +77,14 @@ public class ImageOperationsTest {
     
     @Test
     public void createGalleriesHtml() throws Exception {
-        Map<String, String> galleryLinks = new HashMap<>();
-        galleryLinks.put("fun", "fun/gallery.html");
-        galleryLinks.put("nested - 1", "nested/1/gallery.html");
-        String html = imageOps.createGalleriesHtml(galleryLinks);
+        List<Image> galleries = new ArrayList<Image>();
+        Image galleryFun = new Image("fun1.png", "fun1_thumbnail.png", "fun", "fun");
+        galleryFun.setLink("fun/gallery.html");
+        galleries.add(galleryFun);
+        Image galleryNested1 = new Image("Image1.jpg", "Image1_thumbnail.jpg", "nested - 1", "nested - 1");
+        galleryNested1.setLink("nested/1/gallery.html");
+        galleries.add(galleryNested1);
+        String html = imageOps.createGalleriesHtml(galleries);
         assertNotNull("galleries html may not be null", html);
         assertFalse("galleries html may not be empty", html.isEmpty());
     }
