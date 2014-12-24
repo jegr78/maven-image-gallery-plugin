@@ -1,4 +1,4 @@
-package de.jegr.imagegallery;
+package com.github.jegr78.imagegallery;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

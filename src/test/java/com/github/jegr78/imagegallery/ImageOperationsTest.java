@@ -1,4 +1,4 @@
-package de.jegr.imagegallery;
+package com.github.jegr78.imagegallery;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,7 +14,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.jegr.imagegallery.pojo.Image;
+import com.github.jegr78.imagegallery.ImageOperations;
+import com.github.jegr78.imagegallery.pojo.Image;
 
 
 public class ImageOperationsTest {

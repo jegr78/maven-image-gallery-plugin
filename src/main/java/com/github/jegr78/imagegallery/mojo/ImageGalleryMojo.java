@@ -1,4 +1,4 @@
-package de.jegr.imagegallery.mojo;
+package com.github.jegr78.imagegallery.mojo;
 
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
@@ -27,7 +27,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import de.jegr.imagegallery.ImageOperations;
+import com.github.jegr78.imagegallery.ImageOperations;
 
 /**
  * Goal which creates a HTML image gallery.

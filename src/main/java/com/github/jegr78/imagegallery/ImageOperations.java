@@ -1,4 +1,4 @@
-package de.jegr.imagegallery;
+package com.github.jegr78.imagegallery;
 
 import java.awt.Image;
 import java.io.File;
@@ -73,7 +73,7 @@ public class ImageOperations {
 
     public List<File> copyToOutputDirectory(Map<String, List<File>> imageFilesPerDirectory) throws IOException {
         List<File> errors = new LinkedList<>();
-        List<de.jegr.imagegallery.pojo.Image> galleries = new ArrayList<>();
+        List<com.github.jegr78.imagegallery.pojo.Image> galleries = new ArrayList<>();
         for (Entry<String, List<File>> entry : imageFilesPerDirectory.entrySet()) {
             copyToOutputDirectory(errors, entry, galleries);
         }
@@ -81,7 +81,7 @@ public class ImageOperations {
         return errors;
     }
 
-    private void copyToOutputDirectory(List<File> errors, Entry<String, List<File>> entry, List<de.jegr.imagegallery.pojo.Image> galleries) throws IOException {
+    private void copyToOutputDirectory(List<File> errors, Entry<String, List<File>> entry, List<com.github.jegr78.imagegallery.pojo.Image> galleries) throws IOException {
         String imageDirOutputName = entry.getKey();
         File outputImageDir = ensureOutputImageDirectory(imageDirOutputName);
         copyDirectoryImageFiles(errors, entry.getValue(), outputImageDir);
@@ -206,7 +206,7 @@ public class ImageOperations {
                 continue;
             }
             String thumbnailImageName = getThumbnailFileName(imageFile);
-            de.jegr.imagegallery.pojo.Image image = new de.jegr.imagegallery.pojo.Image(fileName, thumbnailImageName, FilenameUtils.getBaseName(fileName), imageDir.getName());
+            com.github.jegr78.imagegallery.pojo.Image image = new com.github.jegr78.imagegallery.pojo.Image(fileName, thumbnailImageName, FilenameUtils.getBaseName(fileName), imageDir.getName());
             JSONObject imageJson = new JSONObject(image);
             imageJsons.put(imageJson);
         }
@@ -223,7 +223,7 @@ public class ImageOperations {
     }
     
 
-    private void addGalleryInfo(List<de.jegr.imagegallery.pojo.Image> galleries, String imageDirOutputName, String titlePath) {
+    private void addGalleryInfo(List<com.github.jegr78.imagegallery.pojo.Image> galleries, String imageDirOutputName, String titlePath) {
         File[] imageFiles = findImagesForGalleryInfo(imageDirOutputName);
         addImageToGalleryInfo(galleries, imageDirOutputName, imageFiles[0]);
     }
@@ -242,18 +242,18 @@ public class ImageOperations {
         return imageFiles;
     }
 
-    private void addImageToGalleryInfo(List<de.jegr.imagegallery.pojo.Image> galleries, String imageDirOutputName, File imageFile) {
+    private void addImageToGalleryInfo(List<com.github.jegr78.imagegallery.pojo.Image> galleries, String imageDirOutputName, File imageFile) {
         String galleryLink = imageDirOutputName.concat("/gallery.html");
         String thumbnailImageName = getThumbnailFileName(imageFile);
         String title = createTitlePath(imageDirOutputName);
         String imageName = imageDirOutputName.concat("/").concat(imageFile.getName());
         String thumbName = imageDirOutputName.concat("/").concat(thumbnailImageName);
-        de.jegr.imagegallery.pojo.Image image = new de.jegr.imagegallery.pojo.Image(imageName, thumbName, title, title);
+        com.github.jegr78.imagegallery.pojo.Image image = new com.github.jegr78.imagegallery.pojo.Image(imageName, thumbName, title, title);
         image.setLink(galleryLink);
         galleries.add(image);
     }
     
-    private void writeIndexHtml(List<de.jegr.imagegallery.pojo.Image> galleries) throws IOException {
+    private void writeIndexHtml(List<com.github.jegr78.imagegallery.pojo.Image> galleries) throws IOException {
         String galleriesHtml = createGalleriesHtml(galleries);
         String indexHtml = readResource("index.html");
         indexHtml = indexHtml.replace("%GALLERIES%", galleriesHtml);
@@ -261,21 +261,21 @@ public class ImageOperations {
         FileUtils.write(indexHtmlFile, indexHtml);
     }
     
-    String createGalleriesHtml(List<de.jegr.imagegallery.pojo.Image> galleries) {
+    String createGalleriesHtml(List<com.github.jegr78.imagegallery.pojo.Image> galleries) {
         sortGalleries(galleries);
         String data = "var data = ";
         JSONArray galleriesJson = new JSONArray();
-        for (de.jegr.imagegallery.pojo.Image gallery : galleries) {
+        for (com.github.jegr78.imagegallery.pojo.Image gallery : galleries) {
             galleriesJson.put(new JSONObject(gallery));
         }
         return data.concat(galleriesJson.toString());
     }
     
-    private void sortGalleries(List<de.jegr.imagegallery.pojo.Image> galleries) {
-        Collections.sort(galleries, new Comparator<de.jegr.imagegallery.pojo.Image>() {
+    private void sortGalleries(List<com.github.jegr78.imagegallery.pojo.Image> galleries) {
+        Collections.sort(galleries, new Comparator<com.github.jegr78.imagegallery.pojo.Image>() {
 
             @Override
-            public int compare(de.jegr.imagegallery.pojo.Image o1, de.jegr.imagegallery.pojo.Image o2) {
+            public int compare(com.github.jegr78.imagegallery.pojo.Image o1, com.github.jegr78.imagegallery.pojo.Image o2) {
                 return o1.getTitle().compareTo(o2.getTitle());
             }
         });

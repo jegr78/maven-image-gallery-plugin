@@ -1,4 +1,4 @@
-package de.jegr.imagegallery.pojo;
+package com.github.jegr78.imagegallery.pojo;
 
 public class Image {
 

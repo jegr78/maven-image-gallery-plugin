@@ -1,4 +1,4 @@
-package de.jegr.imagegallery;
+package com.github.jegr78.imagegallery;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
+
+import com.github.jegr78.imagegallery.ImageOperations;
+import com.github.jegr78.imagegallery.ThumbnailCreator;
 
 public class ThumbnailCreatorTest {
 
