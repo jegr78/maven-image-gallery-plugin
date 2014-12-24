@@ -1,0 +1,7 @@
+<FindBugsFilter>
+
+	<!-- exclude gernerated -->
+	<Match>
+		<Class name="com.github.jegr78.imagegallery.mojo.HelpMojo" />
+	</Match>
+</FindBugsFilter>

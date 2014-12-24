@@ -1,52 +1,45 @@
 package com.github.jegr78.imagegallery.pojo;
 
-public class Image {
+import java.util.Objects;
 
-    private String image;
-    private String thumb;
-    private String title;
-    private String description;
+public class Image implements Comparable<Image> {
+
+    private final String image;
+    private final String thumb;
+    private final String title;
+    private final String description;
     private String link;
     
    
     public Image(String image, String thumb, String title, String description) {
-        super();
+        verifyParameters(image, thumb, title, description);
         this.image = image;
         this.thumb = thumb;
         this.title = title;
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    private void verifyParameters(String image, String thumb, String title, String description) {
+        Objects.requireNonNull(image, "image may not be null");
+        Objects.requireNonNull(thumb, "thumb may not be null");
+        Objects.requireNonNull(title, "title may not be null");
+        Objects.requireNonNull(description, "description may not be null");
     }
     
-    public void setImage(String image) {
-        this.image = image;
+    public String getImage() {
+        return image;
     }
     
     public String getThumb() {
         return thumb;
     }
     
-    public void setThumb(String thumb) {
-        this.thumb = thumb;
-    }
-    
     public String getTitle() {
         return title;
     }
     
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
     public String getDescription() {
         return description;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
     }
     
     public String getLink() {
@@ -122,6 +115,14 @@ public class Image {
     @Override
     public String toString() {
         return "Image [image=" + image + ", thumb=" + thumb + ", title=" + title + ", description=" + description + ", link=" + link + "]";
+    }
+
+    @Override
+    public int compareTo(Image o) {
+        if (o == null) {
+            return 0;
+        }
+        return title.compareTo(o.getTitle());
     }
     
 }

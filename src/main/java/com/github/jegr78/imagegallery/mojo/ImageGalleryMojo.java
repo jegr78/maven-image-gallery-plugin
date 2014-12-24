@@ -54,8 +54,12 @@ public class ImageGalleryMojo extends AbstractMojo {
 
 	private void ensureDirectories() {
 	    getLog().debug("ensure src/dest directories existence");
-	    outputDirectory.mkdirs();
-	    imagesRootDirectory.mkdirs();
+	    if (outputDirectory.mkdirs()) {
+	        getLog().debug("output dir created: " + outputDirectory);
+	    }
+	    if (imagesRootDirectory.mkdirs()) {
+	        getLog().debug("images root dir created: " + imagesRootDirectory);
+	    }
 	}
 
     private void initImageOperations() {

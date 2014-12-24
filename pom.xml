@@ -46,6 +46,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdkVersion>1.7</jdkVersion>
 	</properties>
 
 	<dependencies>
@@ -87,6 +88,17 @@
 			<artifactId>json</artifactId>
 			<version>20140107</version>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.9</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -95,8 +107,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>${jdkVersion}</source>
+					<target>${jdkVersion}</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -183,6 +195,108 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>2.5</version>
+					<executions>
+						<execution>
+							<id>do-jxr</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>jxr</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>3.3</version>
+					<configuration>
+						<sourceEncoding>utf-8</sourceEncoding>
+						<targetJdk>${jdkVersion}</targetJdk>
+						<!-- For Copy/Paste Detector CPD extension -->
+						<minimumTokens>100</minimumTokens>
+						<excludeRoots>
+							<excludeRoot>${project.build.directory}/generated-sources/plugin/</excludeRoot>
+						</excludeRoots>
+					</configuration>
+					<executions>
+						<execution>
+							<id>do-pmd</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>pmd</goal>
+								<goal>cpd</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>3.0.0</version>
+					<configuration>
+						<effort>Max</effort>
+						<maxHeap>1024</maxHeap>
+						<threshold>Low</threshold>
+						<xmlOutput>true</xmlOutput>
+						<excludeFilterFile>findbugsfilter.xml</excludeFilterFile>
+					</configuration>
+					<executions>
+						<execution>
+							<id>do-findbugs</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>findbugs</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.13</version>
+					<configuration>
+						<configLocation>checkstyle.xml</configLocation>
+						<excludes>com/github/jegr78/imagegallery/mojo/HelpMojo.java</excludes>
+					</configuration>
+					<executions>
+						<execution>
+							<id>do-checkstyle</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>checkstyle</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.7.2.201409121644</version>
+                    <configuration>
+                        <destFile>${project.build.directory}/jacoco-${project.artifactId}.exec</destFile>
+                        <dataFile>${project.build.directory}/jacoco-${project.artifactId}.exec</dataFile>
+                        <outputDirectory>${project.build.directory}/jacoco</outputDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>init-coverage-engine</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>create-coverage-report</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -268,6 +382,40 @@
 								</goals>
 							</execution>
 						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>checks</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jxr-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-pmd-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>findbugs-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-checkstyle-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>coverage</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>
