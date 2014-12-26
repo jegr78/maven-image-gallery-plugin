@@ -75,16 +75,7 @@ public final class GalleryCreator {
 
     private File[] findImagesForGalleryInfo(String imageDirOutputName) {
         File imageDir = ensureOutputImageDirectory(imageDirOutputName);
-        File[] imageFiles = imageDir.listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(File file) {
-                return ImageOperations.isValidImageFile(file)
-                        && false == file.getName().contains("_thumbnail");
-            }
-            
-        });
-        return imageFiles;
+        return imageDir.listFiles(new ImageFileFilter());
     }
     
     void addImageToGalleryInfo(List<Image> galleries, String imageDirOutputName, File imageFile) {
@@ -120,5 +111,14 @@ public final class GalleryCreator {
     
     void sortGalleries(List<Image> galleries) {
         Collections.sort(galleries);
+    }
+    
+    private static class ImageFileFilter implements FileFilter {
+        
+        @Override
+        public boolean accept(File file) {
+            return ImageOperations.isValidImageFile(file)
+                    && false == file.getName().contains("_thumbnail");
+        }
     }
 }

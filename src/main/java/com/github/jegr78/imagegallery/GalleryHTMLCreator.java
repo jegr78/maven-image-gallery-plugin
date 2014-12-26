@@ -36,14 +36,7 @@ final class GalleryHTMLCreator {
     }
 
     JSONArray createImageJsonData(File imageDir) {
-        File[] imageFiles = imageDir.listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(File file) {
-                return ImageOperations.isValidImageFile(file);
-            }
-
-        });
+        File[] imageFiles = determineImageFiles(imageDir);
         JSONArray imageJsons = new JSONArray();
         for (File imageFile : imageFiles) {
             String fileName = imageFile.getName();
@@ -59,6 +52,10 @@ final class GalleryHTMLCreator {
         return imageJsons;
     }
 
+    private File[] determineImageFiles(File imageDir) {
+        return imageDir.listFiles(new ImageFileFilter());
+    }
+
 
     void writeHTML(File imageDir, String homePath, String titlePath, JSONArray imageJsons) throws IOException {
         String data = "var data = ".concat(imageJsons.toString());
@@ -67,5 +64,13 @@ final class GalleryHTMLCreator {
         logger.debug("write " + HTML_FILENAME + " for image dir " + imageDir + ": " + html);
         File galleryHtmlFile = new File(imageDir, HTML_FILENAME);
         FileUtils.write(galleryHtmlFile, html);
+    }
+    
+    private static class ImageFileFilter implements FileFilter {
+        
+        @Override
+        public boolean accept(File file) {
+            return ImageOperations.isValidImageFile(file);
+        }
     }
 }
