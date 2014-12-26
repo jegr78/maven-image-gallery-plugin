@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.jegr78</groupId>
 	<artifactId>image-gallery-maven-plugin</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Maven Image Gallery Plugin</name>
@@ -15,7 +14,8 @@
 		<url>https://github.com/jegr78/maven-image-gallery-plugin</url>
 		<connection>scm:git:git://github.com/jegr78/maven-image-gallery-plugin.git</connection>
 		<developerConnection>scm:git:git@github.com:jegr78/maven-image-gallery-plugin.git</developerConnection>
-	</scm>
+	  <tag>image-gallery-maven-plugin-1.0</tag>
+  </scm>
 
 	<licenses>
 		<license>
@@ -195,7 +195,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
