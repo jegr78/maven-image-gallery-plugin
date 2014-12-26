@@ -5,25 +5,33 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jegr78.imagegallery.ImageOperations;
-import com.github.jegr78.imagegallery.ThumbnailCreator;
-
 public class ThumbnailCreatorTest {
+    
+    private ThumbnailCreator thumbnailCreator;
+    private File outputDir;
+    
+    @Before
+    public void initThumbnailCreator() {
+        outputDir = new File("target/thumbs");
+        outputDir.mkdirs();
+        thumbnailCreator = new ThumbnailCreator(outputDir);
+    }
 
     @Test
     public void createThumbnail() throws Exception {
         File outputDir = new File("target/thumbs");
         outputDir.mkdirs();
 
-        assertThumbnail("gallery/logos", "Logo1.jpg", outputDir);
-        assertThumbnail("gallery/fun", "fun2.png", outputDir);
+        assertThumbnail("gallery/logos", "Logo1.jpg");
+        assertThumbnail("gallery/fun", "fun2.png");
     }
     
-    private void assertThumbnail(String dirName, String imageName, File outputDir) throws IOException {
+    private void assertThumbnail(String dirName, String imageName) throws IOException {
         File imageFile = new File(ThumbnailCreatorTest.class.getClassLoader().getResource(dirName + "/" + imageName).getFile());
-        ThumbnailCreator.create(imageFile, outputDir);
+        thumbnailCreator.create(imageFile);
         String thumbnailFileName = ImageOperations.getThumbnailFileName(imageFile);
         File thumbnailFile = new File(outputDir, thumbnailFileName);        
         assertTrue("thumbnail was not created: " + thumbnailFile, thumbnailFile.exists());

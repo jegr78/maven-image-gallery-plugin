@@ -72,6 +72,13 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.17</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.imgscalr</groupId>
@@ -273,30 +280,30 @@
 					</executions>
 				</plugin>
 				<plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.2.201409121644</version>
-                    <configuration>
-                        <destFile>${project.build.directory}/jacoco-${project.artifactId}.exec</destFile>
-                        <dataFile>${project.build.directory}/jacoco-${project.artifactId}.exec</dataFile>
-                        <outputDirectory>${project.build.directory}/jacoco</outputDirectory>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>init-coverage-engine</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>create-coverage-report</id>
-                            <phase>prepare-package</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.7.2.201409121644</version>
+					<configuration>
+						<destFile>${project.build.directory}/jacoco-${project.artifactId}.exec</destFile>
+						<dataFile>${project.build.directory}/jacoco-${project.artifactId}.exec</dataFile>
+						<outputDirectory>${project.build.directory}/jacoco</outputDirectory>
+					</configuration>
+					<executions>
+						<execution>
+							<id>init-coverage-engine</id>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>create-coverage-report</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

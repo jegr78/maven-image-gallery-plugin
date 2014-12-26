@@ -19,7 +19,6 @@ package com.github.jegr78.imagegallery.mojo;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,6 +26,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import com.github.jegr78.imagegallery.GalleryCreator;
 import com.github.jegr78.imagegallery.ImageOperations;
 
 /**
@@ -42,54 +42,36 @@ public class ImageGalleryMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${basedir}", property = "imagesRootDir", required = true)
 	private File imagesRootDirectory;
 
-	private ImageOperations imageOps;
 	
 	public void execute() throws MojoExecutionException {
 	    getLog().info("creating image gallery from: " + imagesRootDirectory + " to: " + outputDirectory);
 		ensureDirectories();
-		initImageOperations();
-		copyGalleriaFiles();
-		copyToOutputDirectory(scanImagesRootDir());
+        createGallery();
 	}
-
+	
 	private void ensureDirectories() {
 	    getLog().debug("ensure src/dest directories existence");
-	    if (outputDirectory.mkdirs()) {
-	        getLog().debug("output dir created: " + outputDirectory);
-	    }
-	    if (imagesRootDirectory.mkdirs()) {
-	        getLog().debug("images root dir created: " + imagesRootDirectory);
-	    }
+	    ImageOperations.checkCreatedDirectory(imagesRootDirectory);
+	    ImageOperations.checkCreatedDirectory(outputDirectory);
 	}
 
-    private void initImageOperations() {
-        imageOps = new ImageOperations(imagesRootDirectory, outputDirectory);
-    }
-    
-    private void copyGalleriaFiles() throws MojoExecutionException {
-        getLog().debug("copy galleria files to destination");
+    private void createGallery() throws MojoExecutionException {
         try {
-            imageOps.copyGalleriaFiles();
-        } catch (IOException e) {
-            throw new MojoExecutionException("unable to copy galleria files", e);
-        }
-    }
-
-	private Map<String, List<File>> scanImagesRootDir() {
-	    getLog().debug("scanning destination directory for images");
-		return imageOps.scanImagesRootDir();
-	}
-
-	private void copyToOutputDirectory(Map<String, List<File>> imageFilesPerDirectory) throws MojoExecutionException {
-	    getLog().debug("copying found images to destination");
-        try {
-            List<File> errors = imageOps.copyToOutputDirectory(imageFilesPerDirectory);
+            List<File> errors = new GalleryCreator(imagesRootDirectory, outputDirectory).create();
             for (File error : errors) {
                 getLog().warn("unable to copy file: " + error);
             }
         } catch (IOException e) {
-            throw new MojoExecutionException("unable to copy images to output directory", e);   
+            throw new MojoExecutionException("cannot create gallery", e);
         }
-	}
+    }
+    
+    public void setImagesRootDirectory(File imagesRootDirectory) {
+        this.imagesRootDirectory = imagesRootDirectory;
+    }
+    
+    public void setOutputDirectory(File outputDirectory) {
+        this.outputDirectory = outputDirectory;
+    }
 
 }

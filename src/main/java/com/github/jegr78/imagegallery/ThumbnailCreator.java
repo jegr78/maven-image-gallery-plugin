@@ -11,23 +11,28 @@ import org.apache.commons.io.FilenameUtils;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 
-public final class ThumbnailCreator {
+final class ThumbnailCreator {
+    
+    private final File outputDirectory;
 	
-	private ThumbnailCreator() {}
+    ThumbnailCreator(File outputDirectory) {
+        ImageOperations.checkCreatedDirectory(outputDirectory);
+        this.outputDirectory = outputDirectory;
+    }
 	
-	public static void create(File original, File outputDir) throws IOException {
+	void create(File original) throws IOException {
 		BufferedImage image = resize(original);
-		writeToDisk(outputDir, image, original);
+		writeToDisk(image, original);
 	}
 
-    private static BufferedImage resize(File original) throws IOException {
+    private BufferedImage resize(File original) throws IOException {
         BufferedImage image = ImageIO.read(original);
 		return Scalr.resize(image, Method.SPEED, 125, Scalr.OP_ANTIALIAS);
     }
 
-    private static void writeToDisk(File outputDir, BufferedImage image, File original) throws IOException {
+    void writeToDisk(BufferedImage image, File original) throws IOException {
         String name = ImageOperations.getThumbnailFileName(original);
-        File output = new File(outputDir, name);
+        File output = new File(outputDirectory, name);
 		FileUtils.deleteQuietly(output);
         ImageIO.write(image, FilenameUtils.getExtension(name), output);
     }

@@ -1,99 +1,74 @@
 package com.github.jegr78.imagegallery;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
-
-import com.github.jegr78.imagegallery.ImageOperations;
-import com.github.jegr78.imagegallery.pojo.Image;
 
 
 public class ImageOperationsTest {
     
     private static final String ROOT_DIR_PATH = "src/test/resources/gallery";
-    private static final String OUTPUT_DIR_PATH = "target/gallery";
-    
-    private ImageOperations imageOps;
-    
-    @Before
-    public void initImageOps() throws Exception {
-        File rootDir = new File(ROOT_DIR_PATH);
-        File outputDir = new File(OUTPUT_DIR_PATH);
-        outputDir.mkdirs();
-        imageOps = new ImageOperations(rootDir, outputDir);
-    }
-
-    @Test
-    public void scanImagesRootDir() throws Exception {
-        Map<String, List<File>> imagesPerDir = imageOps.scanImagesRootDir();
-        Set<String> directories = imagesPerDir.keySet();
-        assertEquals("wrong number of directories", 4, directories.size());
-    }
     
     @Test
-    public void getImageDirOutputName() throws Exception {
-        assertImageDirOutputName("fun");
-        assertImageDirOutputName("nested/1");
+    public void verifyDirectorySuccess() throws Exception {
+        File dir = new File(ROOT_DIR_PATH);
+        ImageOperations.verifyDirectory(dir);
     }
     
-    private void assertImageDirOutputName(String path) {
-        File imageDir = new File(ROOT_DIR_PATH + "/" + path);
-        String name = imageOps.getImageDirRelativePath(imageDir);
-        assertEquals("wrong name", path, name);
+    @Test(expected = IllegalArgumentException.class)
+    public void verifyDirectoryFailureNoDirectory() throws Exception {
+        File file = new File(ROOT_DIR_PATH, "fun/fun1.png");
+        ImageOperations.verifyDirectory(file);
     }
     
-    @Test
-    public void createHTMLForImageDirectory() throws Exception {
-        File imageDir = new File(OUTPUT_DIR_PATH + "/fun");
-        imageOps.createHTMLForImageDirectory("fun", "../", "fun");
-        File htmlFile = new File(imageDir, "gallery.html");
-        assertTrue("no html file written", htmlFile.exists());
+    @Test(expected = IllegalArgumentException.class)
+    public void verifyDirectoryFailureNull() throws Exception {
+        ImageOperations.verifyDirectory(null);
     }
     
     @Test
     public void createHomePath() throws Exception {
-        String homePath = imageOps.createHomePath("fun");
+        String homePath = ImageOperations.createHomePath("fun");
         assertEquals("wrong home path", "../", homePath);
-        homePath = imageOps.createHomePath("nested/1");
+        homePath = ImageOperations.createHomePath("nested/1");
         assertEquals("wrong home path", "../../", homePath);
     }
     
     @Test
     public void createTitlePath() throws Exception {
-        String titlePath = imageOps.createTitlePath("fun");
+        String titlePath = ImageOperations.createTitlePath("fun");
         assertEquals("wrong title path", "fun", titlePath);
-        titlePath = imageOps.createTitlePath("nested/1");
+        titlePath = ImageOperations.createTitlePath("nested/1");
         assertEquals("wrong title path", "nested - 1", titlePath);
     }
     
     @Test
-    public void createGalleriesHtml() throws Exception {
-        List<Image> galleries = new ArrayList<Image>();
-        Image galleryFun = new Image("fun1.png", "fun1_thumbnail.png", "fun", "fun");
-        galleryFun.setLink("fun/gallery.html");
-        galleries.add(galleryFun);
-        Image galleryNested1 = new Image("Image1.jpg", "Image1_thumbnail.jpg", "nested - 1", "nested - 1");
-        galleryNested1.setLink("nested/1/gallery.html");
-        galleries.add(galleryNested1);
-        String html = imageOps.createGalleriesHtml(galleries);
-        assertNotNull("galleries html may not be null", html);
-        assertFalse("galleries html may not be empty", html.isEmpty());
+    public void getThumbnailFileName() throws Exception {
+        String thumbnailFileName = ImageOperations.getThumbnailFileName(new File(ROOT_DIR_PATH, "fun/fun1.png"));
+        assertEquals("wrong thumbnail file name", "fun1_thumbnail.png", thumbnailFileName);
+        thumbnailFileName = ImageOperations.getThumbnailFileName(new File(ROOT_DIR_PATH, "logos/Logo2.jpg"));
+        assertEquals("wrong thumbnail file name", "Logo2_thumbnail.jpg", thumbnailFileName);
     }
     
     @Test
-    public void copyToOutputDirectory() throws Exception {
-        imageOps.copyGalleriaFiles();
-        List<File> errors = imageOps.copyToOutputDirectory(imageOps.scanImagesRootDir());
-        assertTrue("there should be no errors: " + errors.toString(), errors.isEmpty());
+    public void ensureOriginalImageFileSuccess() throws Exception {
+        ImageOperations.ensureOriginalFile(new File(ROOT_DIR_PATH, "fun/fun1.png"));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void ensureOriginalImageFileFailureFileNotExists() throws Exception {
+        ImageOperations.ensureOriginalFile(new File(ROOT_DIR_PATH, "fun/fun100.png"));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void ensureOriginalImageFileFailureFileNotFile() throws Exception {
+        ImageOperations.ensureOriginalFile(new File(ROOT_DIR_PATH, "fun"));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void ensureOriginalImageFileFailureFileNull() throws Exception {
+        ImageOperations.ensureOriginalFile(null);
     }
 }
