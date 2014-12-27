@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.jegr78</groupId>
@@ -7,6 +8,7 @@
 	<packaging>maven-plugin</packaging>
 
 	<name>Maven Image Gallery Plugin</name>
+	<description>Maven Plugin for creating a HTML image gallery from a given images folder</description>
 
 	<url>https://github.com/jegr78/maven-image-gallery-plugin</url>
 
@@ -14,8 +16,8 @@
 		<url>https://github.com/jegr78/maven-image-gallery-plugin</url>
 		<connection>scm:git:git://github.com/jegr78/maven-image-gallery-plugin.git</connection>
 		<developerConnection>scm:git:git@github.com:jegr78/maven-image-gallery-plugin.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<licenses>
 		<license>
