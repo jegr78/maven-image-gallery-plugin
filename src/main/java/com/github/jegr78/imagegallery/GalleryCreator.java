@@ -39,7 +39,7 @@ public final class GalleryCreator {
     }
     
     public List<File> create() throws IOException {
-        copyGalleriaFiles();
+        copyStaticWebResourceFiles();
         Map<String, List<File>> imageFilesPerDirectory = imageScanner.scan();
         List<Image> galleries = new ArrayList<>();
         for (Entry<String, List<File>> entry : imageFilesPerDirectory.entrySet()) {
@@ -49,8 +49,8 @@ public final class GalleryCreator {
         return galleryImageCreator.getErrors();
     }
     
-    void copyGalleriaFiles() throws IOException {
-        ImageOperations.copyResource("galleria", outputDirectory);
+    void copyStaticWebResourceFiles() throws IOException {
+        ImageOperations.copyResource("static", outputDirectory);
     }
     
     private void copyToOutputDirectory(Entry<String, List<File>> entry, List<Image> galleries) throws IOException {

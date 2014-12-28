@@ -93,7 +93,18 @@ public final class ImageOperations {
     }
 
     public static boolean isValidImageDir(File dir) {
-        return dir != null && dir.isDirectory() && false == "galleria".equals(dir.getName());
+        return isValidDir(dir) && isNotStaticResourcesDir(dir.getName());
+    }
+    
+    private static boolean isValidDir(File dir) {
+        return dir != null && dir.isDirectory();
+    }
+    
+    private static boolean isNotStaticResourcesDir(String dirName) {
+        return false == "static".equals(dirName)
+                && false == "galleria".equals(dirName)
+                && false == "jquery".equals(dirName)
+                && false == "bootstrap".equals(dirName);
     }
     
     public static boolean isValidImageFile(File file) {

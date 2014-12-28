@@ -2,11 +2,11 @@
 <html>
     <head>
         <title>%TITLE%</title>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
-        <script src="%HOME_PATH%galleria/galleria-1.4.2.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script src="%HOME_PATH%static/jquery/jquery-1.11.2.min.js"></script>
+        <script src="%HOME_PATH%static/galleria/galleria-1.4.2.min.js"></script>
+        <link rel="stylesheet" href="%HOME_PATH%static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="%HOME_PATH%static/bootstrap/css/bootstrap-theme.min.css">
+        <script src="%HOME_PATH%static/bootstrap/js/bootstrap.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
@@ -23,7 +23,7 @@
             <script>
               %DATA%
             
-              Galleria.loadTheme('%HOME_PATH%galleria/themes/classic/galleria.classic.min.js');
+              Galleria.loadTheme('%HOME_PATH%static/galleria/themes/classic/galleria.classic.min.js');
               Galleria.run('.galleria', {
                 dataSource: data,
                 transition: 'fade'

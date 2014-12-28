@@ -33,8 +33,8 @@ public class GalleryCreatorTest {
     public void create() throws Exception {
         List<File> errors = galleryCreator.create();
         assertTrue("there should be no errors", errors.isEmpty());
-        File copiedGalleriaDir = new File(OUTPUT_DIR_PATH, "galleria");
-        assertTrue("galleria dir not copied", copiedGalleriaDir.isDirectory());
+        File copiedStaticDir = new File(OUTPUT_DIR_PATH, "static");
+        assertTrue("static dir not copied", copiedStaticDir.isDirectory());
         File indexFile = new File(OUTPUT_DIR_PATH, GalleryCreator.HTML_FILENAME);
         assertTrue("no " + indexFile + " file written", indexFile.isFile());
     }
