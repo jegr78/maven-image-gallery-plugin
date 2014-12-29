@@ -41,10 +41,13 @@ public class ImageGalleryMojo extends AbstractMojo {
 	
 	@Parameter(defaultValue = "${basedir}", property = "imagesRootDir", required = true)
 	private File imagesRootDirectory;
+	
+	@Parameter(defaultValue = "true", property = "createZip", required = true)
+	private boolean createZip;
 
 	
 	public void execute() throws MojoExecutionException {
-	    getLog().info("creating image gallery from: " + imagesRootDirectory + " to: " + outputDirectory);
+	    getLog().info("creating image gallery from: " + imagesRootDirectory + " to: " + outputDirectory + " zip: " + createZip);
 		ensureDirectories();
         createGallery();
 	}
@@ -57,7 +60,7 @@ public class ImageGalleryMojo extends AbstractMojo {
 
     private void createGallery() throws MojoExecutionException {
         try {
-            List<File> errors = new GalleryCreator(imagesRootDirectory, outputDirectory).create();
+            List<File> errors = new GalleryCreator(imagesRootDirectory, outputDirectory, createZip).create();
             for (File error : errors) {
                 getLog().warn("unable to copy file: " + error);
             }
@@ -72,6 +75,10 @@ public class ImageGalleryMojo extends AbstractMojo {
     
     public void setOutputDirectory(File outputDirectory) {
         this.outputDirectory = outputDirectory;
+    }
+    
+    public void setCreateZip(boolean createZip) {
+        this.createZip = createZip;
     }
 
 }

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.lingala.zip4j.exception.ZipException;
+
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,20 +24,24 @@ public final class GalleryCreator {
     public static final String HTML_FILENAME = "index.html";
     
     private final File outputDirectory;
+    private final boolean createZip;
     private final ImageScanner imageScanner;
     private final GalleryImageCreator galleryImageCreator;
     private final GalleryHTMLCreator galleryHTMLCreator;
+    private final GalleryZipper galleryZipper;
 
     private final Logger logger;
 
-    public GalleryCreator(final File imagesRootDirectory, final File outputDirectory) {
+    public GalleryCreator(final File imagesRootDirectory, final File outputDirectory, final boolean createZip) {
         ImageOperations.verifyDirectory(imagesRootDirectory);
         ImageOperations.verifyDirectory(outputDirectory);
         this.outputDirectory = outputDirectory;
+        this.createZip = createZip;
         imageScanner = new ImageScanner(imagesRootDirectory);
         File galleryBaseOutputDir = ensureOutputImageDirectory("images");
         galleryImageCreator = new GalleryImageCreator(galleryBaseOutputDir);
         galleryHTMLCreator = new GalleryHTMLCreator(galleryBaseOutputDir);
+        galleryZipper = new GalleryZipper(outputDirectory);
         logger = LoggerFactory.getLogger(getClass());
     }
     
@@ -47,6 +53,7 @@ public final class GalleryCreator {
             copyToOutputDirectory(entry, galleries);
         }
         writeIndexHtml(galleries);
+        checkCreateZip();
         return galleryImageCreator.getErrors();
     }
     
@@ -115,6 +122,22 @@ public final class GalleryCreator {
         Collections.sort(galleries);
     }
     
+    void checkCreateZip() throws IOException {
+        if (false == createZip) {
+            logger.debug("zip creation is not demanded -> skipping it");
+            return;
+        }
+        createZip();
+    }
+    
+    void createZip() throws IOException {
+        try {
+            galleryZipper.create();
+        } catch (ZipException e) {
+            throw new IOException("unable to create zip", e);
+        }
+    }
+
     private static class ImageFileFilter implements FileFilter {
         
         @Override

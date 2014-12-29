@@ -26,7 +26,7 @@ public class GalleryCreatorTest {
         File rootDir = new File(ROOT_DIR_PATH);
         File outputDir = new File(OUTPUT_DIR_PATH);
         outputDir.mkdirs();
-        galleryCreator = new GalleryCreator(rootDir, outputDir);
+        galleryCreator = new GalleryCreator(rootDir, outputDir, false);
     }
     
     @Test
