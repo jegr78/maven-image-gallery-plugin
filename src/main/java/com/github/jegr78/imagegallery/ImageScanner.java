@@ -41,7 +41,7 @@ final class ImageScanner {
                     imageFilesPerDirectory.put(dirName, directoryFiles);
                 }
                 directoryFiles.add(file);
-            } else if (ImageOperations.isValidImageDir(file)) {
+            } else if (ImageOperations.isValidDir(file)) {
                 scanImagesDir(file, imageFilesPerDirectory);
             }
         }

@@ -12,7 +12,7 @@ import org.junit.Test;
 public class GalleryHTMLCreatorTest {
     
     private static final String IMAGE_DIR_NAME = "fun";
-    private static final String ROOT_DIR_PATH = "src/test/resources/gallery/" + IMAGE_DIR_NAME;
+    private static final String ROOT_DIR_PATH = "src/test/resources/images/" + IMAGE_DIR_NAME;
     private static final String OUTPUT_DIR_PATH = "target/htmlcreatortest";
     
     

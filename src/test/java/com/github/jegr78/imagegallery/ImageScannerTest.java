@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class ImageScannerTest {
     
-    private static final String ROOT_DIR_PATH = "src/test/resources/gallery";
+    private static final String ROOT_DIR_PATH = "src/test/resources/images";
     
     private ImageScanner imageScanner;
     

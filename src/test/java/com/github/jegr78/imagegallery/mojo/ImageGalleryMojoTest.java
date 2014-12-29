@@ -15,7 +15,7 @@ public class ImageGalleryMojoTest {
     @Test
     public void execute() throws Exception {
         ImageGalleryMojo mojo = new ImageGalleryMojo();
-        mojo.setImagesRootDirectory(new File("src/test/resources/gallery"));
+        mojo.setImagesRootDirectory(new File("src/test/resources/images"));
         File outputDirectory = new File("target/gallery");
         mojo.setOutputDirectory(outputDirectory);
         mojo.setLog(Mockito.mock(Log.class));

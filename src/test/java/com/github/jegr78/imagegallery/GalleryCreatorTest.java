@@ -16,7 +16,7 @@ import com.github.jegr78.imagegallery.pojo.Image;
 
 public class GalleryCreatorTest {
     
-    private static final String ROOT_DIR_PATH = "src/test/resources/gallery";
+    private static final String ROOT_DIR_PATH = "src/test/resources/images";
     private static final String OUTPUT_DIR_PATH = "target/gallerycreatortest";
     
     private GalleryCreator galleryCreator;

@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class ImageOperationsTest {
     
-    private static final String ROOT_DIR_PATH = "src/test/resources/gallery";
+    private static final String ROOT_DIR_PATH = "src/test/resources/images";
     
     @Test
     public void verifyDirectorySuccess() throws Exception {
@@ -31,9 +31,9 @@ public class ImageOperationsTest {
     @Test
     public void createHomePath() throws Exception {
         String homePath = ImageOperations.createHomePath("fun");
-        assertEquals("wrong home path", "../", homePath);
-        homePath = ImageOperations.createHomePath("nested/1");
         assertEquals("wrong home path", "../../", homePath);
+        homePath = ImageOperations.createHomePath("nested/1");
+        assertEquals("wrong home path", "../../../", homePath);
     }
     
     @Test

@@ -33,8 +33,9 @@ public final class GalleryCreator {
         ImageOperations.verifyDirectory(outputDirectory);
         this.outputDirectory = outputDirectory;
         imageScanner = new ImageScanner(imagesRootDirectory);
-        galleryImageCreator = new GalleryImageCreator(outputDirectory);
-        galleryHTMLCreator = new GalleryHTMLCreator(outputDirectory);
+        File galleryBaseOutputDir = ensureOutputImageDirectory("images");
+        galleryImageCreator = new GalleryImageCreator(galleryBaseOutputDir);
+        galleryHTMLCreator = new GalleryHTMLCreator(galleryBaseOutputDir);
         logger = LoggerFactory.getLogger(getClass());
     }
     
@@ -74,16 +75,17 @@ public final class GalleryCreator {
     }
 
     private File[] findImagesForGalleryInfo(String imageDirOutputName) {
-        File imageDir = ensureOutputImageDirectory(imageDirOutputName);
+        File imageDir = ensureOutputImageDirectory("images/".concat(imageDirOutputName));
         return imageDir.listFiles(new ImageFileFilter());
     }
     
     void addImageToGalleryInfo(List<Image> galleries, String imageDirOutputName, File imageFile) {
-        String galleryLink = imageDirOutputName.concat("/").concat(GalleryHTMLCreator.HTML_FILENAME);
+        String imagesBasePath = "images/".concat(imageDirOutputName).concat("/");
+        String galleryLink = imagesBasePath.concat(GalleryHTMLCreator.HTML_FILENAME);
         String thumbnailImageName = ImageOperations.getThumbnailFileName(imageFile);
         String title = ImageOperations.createTitlePath(imageDirOutputName);
-        String imageName = imageDirOutputName.concat("/").concat(imageFile.getName());
-        String thumbName = imageDirOutputName.concat("/").concat(thumbnailImageName);
+        String imageName = imagesBasePath.concat(imageFile.getName());
+        String thumbName = imagesBasePath.concat(thumbnailImageName);
         Image image = new Image(imageName, thumbName, title, title);
         image.setLink(galleryLink);
         galleries.add(image);

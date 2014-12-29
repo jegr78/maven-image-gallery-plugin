@@ -25,8 +25,8 @@ public class ThumbnailCreatorTest {
         File outputDir = new File("target/thumbs");
         outputDir.mkdirs();
 
-        assertThumbnail("gallery/logos", "Logo1.jpg");
-        assertThumbnail("gallery/fun", "fun2.png");
+        assertThumbnail("images/logos", "Logo1.jpg");
+        assertThumbnail("images/fun", "fun2.png");
     }
     
     private void assertThumbnail(String dirName, String imageName) throws IOException {

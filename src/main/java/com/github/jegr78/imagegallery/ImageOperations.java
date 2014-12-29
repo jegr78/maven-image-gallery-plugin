@@ -40,7 +40,7 @@ public final class ImageOperations {
     }
 
     public static String createHomePath(String imageDirOutputName) {
-        String homePath = "";
+        String homePath = "../"; //images sub dir
         String[] subDirs = imageDirOutputName.split(getPathSplitter());
         for (int i = 0; i < subDirs.length; i++) {
             homePath = homePath.concat("../");
@@ -91,21 +91,11 @@ public final class ImageOperations {
         }
         return extension;
     }
-
-    public static boolean isValidImageDir(File dir) {
-        return isValidDir(dir) && isNotStaticResourcesDir(dir.getName());
-    }
     
-    private static boolean isValidDir(File dir) {
+    public static boolean isValidDir(File dir) {
         return dir != null && dir.isDirectory();
     }
     
-    private static boolean isNotStaticResourcesDir(String dirName) {
-        return false == "static".equals(dirName)
-                && false == "galleria".equals(dirName)
-                && false == "jquery".equals(dirName)
-                && false == "bootstrap".equals(dirName);
-    }
     
     public static boolean isValidImageFile(File file) {
         if (file == null || false == file.isFile()) {
