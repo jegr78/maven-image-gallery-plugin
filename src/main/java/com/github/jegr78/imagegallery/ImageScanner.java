@@ -2,6 +2,9 @@ package com.github.jegr78.imagegallery;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,8 +34,8 @@ final class ImageScanner {
     }
     
     private void scanImagesDir(File imagesDir, Map<String, List<File>> imageFilesPerDirectory) {
-        File[] listFiles = imagesDir.listFiles();
-        for (File file : listFiles) {
+        Collection<File> imageFiles = listImageFiles(imagesDir);
+        for (File file : imageFiles) {
             String dirName = getImageDirRelativePath(file.getParentFile());
             if (ImageOperations.isValidImageFile(file)) {
                 List<File> directoryFiles = imageFilesPerDirectory.get(dirName);
@@ -45,6 +48,13 @@ final class ImageScanner {
                 scanImagesDir(file, imageFilesPerDirectory);
             }
         }
+    }
+    
+    Collection<File> listImageFiles(File imagesDir) {
+        File[] listFiles = imagesDir.listFiles();
+        List<File> imagesFiles = Arrays.asList(listFiles);
+        Collections.sort(imagesFiles, new ImageFileCreationDateComparator());
+        return imagesFiles;
     }
     
     String getImageDirRelativePath(File imageDir) {
