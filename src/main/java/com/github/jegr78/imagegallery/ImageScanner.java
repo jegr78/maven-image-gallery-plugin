@@ -3,7 +3,6 @@ package com.github.jegr78.imagegallery;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,7 +51,6 @@ final class ImageScanner {
     Collection<File> listImageFiles(File imagesDir) {
         File[] listFiles = imagesDir.listFiles();
         List<File> imagesFiles = Arrays.asList(listFiles);
-        Collections.sort(imagesFiles, new ImageFileCreationDateComparator());
         return imagesFiles;
     }
     

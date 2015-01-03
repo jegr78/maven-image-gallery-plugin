@@ -3,6 +3,10 @@ package com.github.jegr78.imagegallery;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -36,7 +40,7 @@ final class GalleryHTMLCreator {
     }
 
     JSONArray createImageJsonData(File imageDir) {
-        File[] imageFiles = determineImageFiles(imageDir);
+        Collection<File> imageFiles = determineImageFiles(imageDir);
         JSONArray imageJsons = new JSONArray();
         for (File imageFile : imageFiles) {
             String fileName = imageFile.getName();
@@ -52,8 +56,11 @@ final class GalleryHTMLCreator {
         return imageJsons;
     }
 
-    private File[] determineImageFiles(File imageDir) {
-        return imageDir.listFiles(new ImageFileFilter());
+    private Collection<File> determineImageFiles(File imageDir) {
+        File[] listFiles = imageDir.listFiles(new ImageFileFilter());
+        List<File> imagesFiles = Arrays.asList(listFiles);
+        Collections.sort(imagesFiles, new ImageFileCreationDateComparator());
+        return imagesFiles;
     }
 
 
