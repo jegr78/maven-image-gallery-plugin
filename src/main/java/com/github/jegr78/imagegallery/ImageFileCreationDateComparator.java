@@ -2,6 +2,7 @@ package com.github.jegr78.imagegallery;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -10,7 +11,9 @@ import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 
-public final class ImageFileCreationDateComparator implements Comparator<File> {
+public final class ImageFileCreationDateComparator implements Comparator<File>, Serializable {
+
+    private static final long serialVersionUID = -2840868173272233897L;
 
     @Override
     public int compare(File file1, File file2) {
@@ -20,6 +23,9 @@ public final class ImageFileCreationDateComparator implements Comparator<File> {
     }
     
     public Date getCreationDate(File file) {
+        if (file == null) {
+            return new Date(0L);
+        }
         if (file.isDirectory()) {
             return getCreationDateFromFile(file);
         }
