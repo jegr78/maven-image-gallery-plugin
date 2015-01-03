@@ -11,7 +11,7 @@ Insert in your pom.xml something like this (you may have to can the path to your
     <plugin>
       <groupId>com.github.jegr78</groupId>
       <artifactId>image-gallery-maven-plugin</artifactId>
-      <version>1.1.0</version>
+      <version>1.2.0</version>
       <configuration>
         <imagesRootDirectory>${basedir}/images</imagesRootDirectory>
       </configuration>
