@@ -93,7 +93,7 @@ public final class ImageOperations {
     }
     
     public static boolean isValidDir(File dir) {
-        return dir != null && dir.isDirectory();
+        return dir != null && dir.isDirectory() && false == "target".equals(dir.getName());
     }
     
     
