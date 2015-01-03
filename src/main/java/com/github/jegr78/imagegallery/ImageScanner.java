@@ -1,7 +1,6 @@
 package com.github.jegr78.imagegallery;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,7 +39,7 @@ final class ImageScanner {
             if (ImageOperations.isValidImageFile(file)) {
                 List<File> directoryFiles = imageFilesPerDirectory.get(dirName);
                 if (directoryFiles == null) {
-                    directoryFiles = new ArrayList<File>();
+                    directoryFiles = new LinkedList<File>();
                     imageFilesPerDirectory.put(dirName, directoryFiles);
                 }
                 directoryFiles.add(file);
