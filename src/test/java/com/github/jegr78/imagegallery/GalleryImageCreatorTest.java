@@ -32,6 +32,6 @@ public class GalleryImageCreatorTest {
         imageCreator.create(imageFiles, "imagecreatortest");
         assertTrue("there should be no errors", imageCreator.getErrors().isEmpty());
         File createdImagesDir = new File(OUTPUT_DIR_PATH, "imagecreatortest");
-        assertEquals("not all images created", 4, createdImagesDir.listFiles().length);
+        assertEquals("not all images created", 6, createdImagesDir.listFiles().length);
     }
 }

@@ -22,9 +22,6 @@ public class ThumbnailCreatorTest {
 
     @Test
     public void createThumbnail() throws Exception {
-        File outputDir = new File("target/thumbs");
-        outputDir.mkdirs();
-
         assertThumbnail("images/logos", "Logo1.jpg");
         assertThumbnail("images/fun", "fun2.png");
     }

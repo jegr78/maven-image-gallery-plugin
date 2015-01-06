@@ -44,11 +44,12 @@ final class GalleryHTMLCreator {
         JSONArray imageJsons = new JSONArray();
         for (File imageFile : imageFiles) {
             String fileName = imageFile.getName();
-            if (fileName.contains("_thumbnail")) {
+            if (fileName.contains("_thumbnail") || fileName.contains("_normalized")) {
                 continue;
             }
             String thumbnailImageName = ImageOperations.getThumbnailFileName(imageFile);
-            Image image = new Image(fileName, thumbnailImageName, FilenameUtils.getBaseName(fileName), imageDir.getName());
+            String normalizedImageName = ImageOperations.getNormalizedFileName(imageFile);
+            Image image = new Image(normalizedImageName, fileName, thumbnailImageName, FilenameUtils.getBaseName(fileName), imageDir.getName());
             JSONObject imageJson = new JSONObject(image);
             imageJsons.put(imageJson);
         }

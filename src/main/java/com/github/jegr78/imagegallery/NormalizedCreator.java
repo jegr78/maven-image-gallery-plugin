@@ -2,20 +2,20 @@ package com.github.jegr78.imagegallery;
 
 import java.io.File;
 
-final class ThumbnailCreator extends ImageCreator {
-
-    
-    ThumbnailCreator(File outputDirectory) {
+final class NormalizedCreator extends ImageCreator {
+	
+    NormalizedCreator(File outputDirectory) {
         super(outputDirectory);
     }
 
     @Override
     protected int getTargetSize() {
-        return 125;
+        return 600;
     }
-
+    
     @Override
     protected String getOutputName(File original) {
-        return ImageOperations.getThumbnailFileName(original);
+        return ImageOperations.getNormalizedFileName(original);
     }
+
 }

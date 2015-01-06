@@ -46,6 +46,7 @@ public final class GalleryCreator {
     }
     
     public List<File> create() throws IOException {
+        FileUtils.cleanDirectory(outputDirectory);
         copyStaticWebResourceFiles();
         Map<String, List<File>> imageFilesPerDirectory = imageScanner.scan();
         List<Image> galleries = new ArrayList<>();
@@ -90,10 +91,12 @@ public final class GalleryCreator {
         String imagesBasePath = "images/".concat(imageDirOutputName).concat("/");
         String galleryLink = imagesBasePath.concat(GalleryHTMLCreator.HTML_FILENAME);
         String thumbnailImageName = ImageOperations.getThumbnailFileName(imageFile);
+        String normalizedImageName = ImageOperations.getNormalizedFileName(imageFile);
         String title = ImageOperations.createTitlePath(imageDirOutputName);
         String imageName = imagesBasePath.concat(imageFile.getName());
         String thumbName = imagesBasePath.concat(thumbnailImageName);
-        Image image = new Image(imageName, thumbName, title, title);
+        String normalizedName = imagesBasePath.concat(normalizedImageName);
+        Image image = new Image(normalizedName, imageName, thumbName, title, title);
         image.setLink(galleryLink);
         galleries.add(image);
     }
@@ -143,7 +146,8 @@ public final class GalleryCreator {
         @Override
         public boolean accept(File file) {
             return ImageOperations.isValidImageFile(file)
-                    && false == file.getName().contains("_thumbnail");
+                    && false == file.getName().contains("_thumbnail")
+                    && false == file.getName().contains("_normalized");
         }
     }
 }

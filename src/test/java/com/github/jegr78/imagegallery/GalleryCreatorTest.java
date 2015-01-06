@@ -42,10 +42,10 @@ public class GalleryCreatorTest {
     @Test
     public void createGalleriesHtml() throws Exception {
         List<Image> galleries = new ArrayList<Image>();
-        Image galleryFun = new Image("fun1.png", "fun1_thumbnail.png", "fun", "fun");
+        Image galleryFun = new Image("fun1_normalized.png", "fun1.png", "fun1_thumbnail.png", "fun", "fun");
         galleryFun.setLink("fun/gallery.html");
         galleries.add(galleryFun);
-        Image galleryNested1 = new Image("Image1.jpg", "Image1_thumbnail.jpg", "nested - 1", "nested - 1");
+        Image galleryNested1 = new Image("Image1_normalized.jpg", "Image1.jpg", "Image1_thumbnail.jpg", "nested - 1", "nested - 1");
         galleryNested1.setLink("nested/1/gallery.html");
         galleries.add(galleryNested1);
         String html = galleryCreator.createGalleriesHtml(galleries);

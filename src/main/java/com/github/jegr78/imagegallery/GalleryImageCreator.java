@@ -35,6 +35,7 @@ final class GalleryImageCreator {
         logger.debug("copy image " + imageFile + " to destination " + imageDir);
         try {
             FileUtils.copyFileToDirectory(imageFile, imageDir);
+            new NormalizedCreator(imageDir).create(imageFile);
             new ThumbnailCreator(imageDir).create(imageFile);
         } catch (IOException e) {
             errors.add(imageFile);

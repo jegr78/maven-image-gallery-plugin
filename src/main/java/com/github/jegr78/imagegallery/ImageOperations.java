@@ -65,11 +65,19 @@ public final class ImageOperations {
     }
 
     public static String getThumbnailFileName(File original) {
+        return getFileName(original, "thumbnail");
+    }
+    
+    public static String getNormalizedFileName(File original) {
+        return getFileName(original, "normalized");
+    }
+    
+    private static String getFileName(File original, String type) {
         ensureOriginalFile(original);
         String imageName = original.getName();
         String baseName = FilenameUtils.getBaseName(imageName);
         String extension = verifyExtension(FilenameUtils.getExtension(imageName));
-        return baseName + "_thumbnail." + extension;
+        return baseName + "_" + type + "." + extension;
     }
 
     public static void ensureOriginalFile(File original) {

@@ -17,8 +17,8 @@ public class ImageTest {
     
     @Before
     public void createImages() {
-        image1 = new Image("image1.png", "image1_thumbnail.png", "Image 1", "A Image");
-        image2 = new Image("image2.png", "image2_thumbnail.png", "Image 2", "Another Image");
+        image1 = new Image("image1.png", "image1_big.png", "image1_thumbnail.png", "Image 1", "A Image");
+        image2 = new Image("image2.png", "image2_big.png", "image2_thumbnail.png", "Image 2", "Another Image");
     }
 
     @Test
@@ -26,7 +26,7 @@ public class ImageTest {
         assertEquals("image1 should be equal", image1, image1);
         assertNotEquals("image1 and image2 shound not be equal", image1, image2);
         
-        Image image1Copy = new Image("image1.png", "image1_thumbnail.png", "Image 1", "A Image");
+        Image image1Copy = new Image("image1.png", "image1_big.png", "image1_thumbnail.png", "Image 1", "A Image");
         assertEquals("image1 and image1 copy should be equal", image1, image1Copy);
         image1.setLink("Link");
         image1Copy.setLink("Copy Link");

@@ -5,22 +5,25 @@ import java.util.Objects;
 public class Image implements Comparable<Image> {
 
     private final String image;
+    private final String big;
     private final String thumb;
     private final String title;
     private final String description;
     private String link;
     
    
-    public Image(String image, String thumb, String title, String description) {
-        verifyParameters(image, thumb, title, description);
+    public Image(String image, String big, String thumb, String title, String description) {
+        verifyParameters(image, big, thumb, title, description);
         this.image = image;
+        this.big = big;
         this.thumb = thumb;
         this.title = title;
         this.description = description;
     }
 
-    private void verifyParameters(String image, String thumb, String title, String description) {
+    private void verifyParameters(String image, String big, String thumb, String title, String description) {
         Objects.requireNonNull(image, "image may not be null");
+        Objects.requireNonNull(big, "big may not be null");
         Objects.requireNonNull(thumb, "thumb may not be null");
         Objects.requireNonNull(title, "title may not be null");
         Objects.requireNonNull(description, "description may not be null");
@@ -28,6 +31,10 @@ public class Image implements Comparable<Image> {
     
     public String getImage() {
         return image;
+    }
+    
+    public String getBig() {
+        return big;
     }
     
     public String getThumb() {
@@ -54,6 +61,7 @@ public class Image implements Comparable<Image> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((big == null) ? 0 : big.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((image == null) ? 0 : image.hashCode());
         result = prime * result + ((link == null) ? 0 : link.hashCode());
@@ -74,6 +82,13 @@ public class Image implements Comparable<Image> {
             return false;
         }
         Image other = (Image) obj;
+        if (big == null) {
+            if (other.big != null) {
+                return false;
+            }
+        } else if (!big.equals(other.big)) {
+            return false;
+        }
         if (description == null) {
             if (other.description != null) {
                 return false;
@@ -114,7 +129,7 @@ public class Image implements Comparable<Image> {
     
     @Override
     public String toString() {
-        return "Image [image=" + image + ", thumb=" + thumb + ", title=" + title + ", description=" + description + ", link=" + link + "]";
+        return "Image [image=" + image + ", big=" + big + ", thumb=" + thumb + ", title=" + title + ", description=" + description + ", link=" + link + "]";
     }
 
     @Override
